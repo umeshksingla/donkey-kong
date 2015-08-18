@@ -44,7 +44,7 @@ def main():
                 elif event.key == pygame.K_UP:
                     living_beings.player.changespeed(board.upi)
                 elif event.key == pygame.K_DOWN:
-                    living_beings.player.changespeed(board.downi)
+                    living_beings.player.stop()
 
 
 
@@ -52,9 +52,10 @@ def main():
         living_beings.player.handle_keys()
         living_beings.player.draw()
         board.allSprites.draw(board.screen)
+        board.allCoins.draw(board.screen)
         board.playerSprite.draw(board.screen)
-        clock.tick(70)
-        pygame.display.flip()
+        clock.tick(60)
+        pygame.display.update()
         #print person.sprites
 
 

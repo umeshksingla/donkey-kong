@@ -42,6 +42,5 @@ class drawCoins(object):
             if i%3==0:
                 c+=board.gap
             board.allCoins.add(coin)
-            board.allSprites.add(coin)
 
             #print  board.gap + 20 + c, board.gap-20+c

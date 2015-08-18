@@ -49,24 +49,29 @@ class Donkey(Person):
 class Player(Person):
 
     def changespeed(self, coor):
+        #print coor
         self.movex += coor[0]
         self.movey += coor[1]
 
     def handle_keys(self):
 
+
         #check whether player is colliding with stairs
-        self.rect.y+=10
+        #self.rect.y+=5
         allHits = pygame.sprite.spritecollide(self, board.allStairs, False)
-        self.rect.y-=10
+        #self.rect.y-=5
+
         if len(allHits) > 0:
             self.onstair = True
         else:
             self.onstair = False
 
+        print self.onstair
+
         self.stickBelow()
 
         #left and right moves
-        self.rect.x += self.movex   #movex defined by
+        self.rect.x += self.movex
 
         #check collisions for right and left
         allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
@@ -90,9 +95,6 @@ class Player(Person):
             elif self.movey < 0:
                 self.rect.top = hit.rect.bottom
             self.movey = 0
-
-
-
 
         #position
         self.position = board.myFont.render(str("P Position : " + str(self.rect.x)+" , "+str(self.rect.y)+" , "+str(self.movex)+" , " + str(self.movey)), 1, board.blue)
@@ -123,10 +125,12 @@ class Player(Person):
                 self.movey = 1
             else:
                 self.movey += board.acc_val
-
         # if self.rect.y >= board.screen_height - 3*board.border_width - self.rect.height and self.movey >= 0:
         #     self.movey = 0
         #     self.rect.y = board.screen_height - 3*board.border_width - self.rect.height
+
+    def stop(self):
+        self.movey = 0
 
     def getPosition(self):
         return self.position
@@ -144,7 +148,7 @@ class livingBeings(object):
         board.border_width+1,
         board.screen_height-8*board.border_width,
         board.mario,
-        3*board.border_width,
+        3*board.border_width-10,
         3*board.border_width,
         0
         ) # player instance
@@ -169,7 +173,7 @@ class livingBeings(object):
         4*board.border_width,
         0
         )
-     stair = Donkey("stair",370,5.5*board.gap,board.ladder,40,board.gap,0)
+     stair = Donkey("stair", 370, 5.5*board.gap-5, board.ladder, 40, board.gap+10, 0)
      board.allStairs.add(stair)
      board.allSprites.add(stair)
      # princess instance

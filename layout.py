@@ -26,7 +26,7 @@ class Board(object):
 
     #speed and accelerate constants
     up , down, left, right = (0,-2),(0,2),(-2,0),(2,0)
-    upi , downi, lefti, righti = (0,2),(0,-2),(2,0),(-2,0)
+    upi , downi, lefti, righti = (0,2),(0,0),(2,0),(-2,0)
     acc_val = 0.25
 
     #display
