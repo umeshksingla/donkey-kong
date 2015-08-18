@@ -1,3 +1,6 @@
+######## Aug 16, 2015 ########
+######## Umesh Singla ########
+
 import pygame, sys, random
 from pygame.locals import *
 
@@ -30,6 +33,8 @@ def main():
                     living_beings.player.changespeed(board.up)
                 elif event.key == pygame.K_DOWN:
                     living_beings.player.changespeed(board.down)
+                elif event.key == pygame.K_SPACE:
+                    living_beings.player.jump()
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
@@ -47,8 +52,9 @@ def main():
         living_beings.player.handle_keys()
         living_beings.player.draw()
         board.allSprites.draw(board.screen)
-        clock.tick(60)
-        pygame.display.update()
+        board.playerSprite.draw(board.screen)
+        clock.tick(70)
+        pygame.display.flip()
         #print person.sprites
 
 

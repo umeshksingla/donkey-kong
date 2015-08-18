@@ -1,3 +1,6 @@
+######## Aug 16, 2015 ########
+######## Umesh Singla ########
+
 import pygame, layout, sys
 from pygame.locals import *
 
@@ -44,95 +47,21 @@ class Donkey(Person):
 
 
 class Player(Person):
-    # def handle_keys(self):
-    #
-    #     key = pygame.key.get_pressed()
-    #     #print key
-    #     if key[pygame.K_UP]:
-    #         if self.onStair():
-    #             self.movey=-1
-    #             self.rect.y+=self.movey
-    #             #print "up stair"
-    #         else:
-    #             #print "inside else"
-    #             self.stickBelow()
-    #     else:
-    #         #print "outside else"
-    #         self.stickBelow()
-    #
-    #     # right and left side moves
-    #     if not self.checkWall():
-    #
-    #         if key[pygame.K_RIGHT]: # right key
-    #             self.rect = self.rect.move(board.right) # move right
-    #             self.movex=2
-    #
-    #         elif key[pygame.K_LEFT]: # left key
-    #             self.rect = self.rect.move(board.left) # move left
-    #             self.movex=-2
-    #
-    #         elif key[pygame.K_SPACE] and not self.onStair(): # space key
-    #             self.jump()
-    #
-    #     if key[pygame.K_DOWN]:
-    #         #print "down button"
-    #         self.rect.y+=5
-    #         allHits=pygame.sprite.spritecollide(self,board.allStairs,False)
-    #         self.rect.y-=5
-    #         for hit in allHits:
-    #             self.rect.bottom=hit.rect.bottom
-    #             #pygame.time.delay(5)
-    #
-    #
-    #     # up and down moves
-    #     self.rect.y += self.movey
-    #
-    #     allHits = pygame.sprite.spritecollide( self, board.allBlocks, False)
-    #
-    #     for hit in allHits:
-    #         if self.movey > 0 or self.onstair:
-    #             self.onstair=False
-    #             self.rect.bottom = hit.rect.top
-    #         elif self.movey<0:
-    #             self.rect.top = hit.rect.bottom
-    #             #self.onstair=False
-    #         self.movey=0
-    #
-    #
-    # def stickBelow(self):       # when player falls from above floor
-    #
-    #     #when we are on ground only and up button is pressed
-    #     if self.rect.y >= board.screen_height-6*board.border_width and self.movey>=0:
-    #         self.movey=0
-    #         self.rect.y = board.screen_height - 6*board.border_width
-    #
-    #     #when we are falling from upper level
-    #     if self.movey==0: # not moving in y direction
-    #         self.movey=1
-    #     else:
-    #         self.movey+=0.25    #accelerate: add 0.25 to 1 every time
-    #
-    # def jump(self):
-    #
-    #     self.rect.y+=2
-    #     allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
-    #     self.rect.y-=2
-    #     if len(allHits) > 0:
-    #         self.movey=-5
-    #
-    # def onStair(self):
-    #     allHits=pygame.sprite.spritecollide(self, board.allStairs, False)
-    #     if len(allHits):
-    #         self.onstair=True
-    #         #print "stair"
-    #         return True
-    #     return False
-##########################################################################33
+
     def changespeed(self, coor):
         self.movex += coor[0]
         self.movey += coor[1]
 
     def handle_keys(self):
+
+        #check whether player is colliding with stairs
+        self.rect.y+=10
+        allHits = pygame.sprite.spritecollide(self, board.allStairs, False)
+        self.rect.y-=10
+        if len(allHits) > 0:
+            self.onstair = True
+        else:
+            self.onstair = False
 
         self.stickBelow()
 
@@ -160,7 +89,12 @@ class Player(Person):
                 self.rect.bottom = hit.rect.top
             elif self.movey < 0:
                 self.rect.top = hit.rect.bottom
-        #posiiton
+            self.movey = 0
+
+
+
+
+        #position
         self.position = board.myFont.render(str("P Position : " + str(self.rect.x)+" , "+str(self.rect.y)+" , "+str(self.movex)+" , " + str(self.movey)), 1, board.blue)
 
 
@@ -172,16 +106,27 @@ class Player(Person):
         #score
         self.score = board.myFont.render(str("Score : "+str(self.points)), 1, board.blue)
 
+    def jump(self):
+
+        self.rect.y += 2
+        allHits = pygame.sprite.spritecollide(self,board.allBlocks,False)
+        self.rect.y -= 2
+
+        if len(allHits) > 0 or self.rect.bottom >= board.screen_height - 3*board.border_width:
+            self.movey = -5
+
+        #print "allHits", allHits, self.movey
+
     def stickBelow(self):
+        if not self.onstair:
+            if self.movey == 0:         # when player falls off a platform freely
+                self.movey = 1
+            else:
+                self.movey += board.acc_val
 
-        if self.movey == 0:
-            self.movey = 1
-        else:
-            self.movey += board.acc_val
-
-        if self.rect.y >= board.screen_height - 3*board.border_width - self.rect.height and self.movey >= 0:
-            self.movey = 0
-            self.rect.y = board.screen_height - 3*board.border_width - self.rect.height
+        # if self.rect.y >= board.screen_height - 3*board.border_width - self.rect.height and self.movey >= 0:
+        #     self.movey = 0
+        #     self.rect.y = board.screen_height - 3*board.border_width - self.rect.height
 
     def getPosition(self):
         return self.position
@@ -229,6 +174,6 @@ class livingBeings(object):
      board.allSprites.add(stair)
      # princess instance
      #print princess
-     board.allSprites.add(player)
+     board.playerSprite.add(player)
      board.allSprites.add(donkey)
      board.allSprites.add(princess)

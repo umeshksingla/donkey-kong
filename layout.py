@@ -1,3 +1,6 @@
+######## Aug 16, 2015 ########
+######## Umesh Singla ########
+
 import pygame
 from pygame.locals import *
 
@@ -46,7 +49,8 @@ class Board(object):
     allCoins = pygame.sprite.Group()
     allFireballs = pygame.sprite.Group()
     allSides = pygame.sprite.Group()
-    allSprites = pygame.sprite.Group()
+    allSprites = pygame.sprite.Group()  #except player
+    playerSprite = pygame.sprite.Group()
 
 class drawRect(pygame.sprite.Sprite):
 
