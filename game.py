@@ -14,6 +14,9 @@ living_beings = person.livingBeings()
 
 coins = coin.drawCoins()
 
+for stair in board.allbStairs:
+    hit = pygame.sprite.spritecollide(stair, board.allCoins, True)      # remove coins which are placed above stairs
+
 possibilities = range(0,1000)
 #print possibilities
 #board.screen.blit(pygame.image.load(board.background),(0,0))

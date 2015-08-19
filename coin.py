@@ -30,7 +30,7 @@ class drawCoins(object):
         c=0
         i=0
         # generate coins
-        for j in range(20):
+        for j in range(30):
 
             x1 = board.border_width + 4*board.border_width
             x2 = board.screen_width-100
@@ -51,8 +51,9 @@ class drawCoins(object):
                 )
 
             i=i+1
-            if i%3==0:
+            if i%4==0:
                 c+=board.gap
             board.allCoins.add(coin)
+
 
             #print  board.gap + 20 + c, board.gap-20+c
