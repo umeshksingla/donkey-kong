@@ -30,6 +30,9 @@ class drawFireball(pygame.sprite.Sprite):
         self.rect.x = self.posx;
         self.rect.y = self.posy;
 
+    def checkCollisions(self, withWhom, disappear):
+
+        return pygame.sprite.spritecollide(self, withWhom, disappear)
         #     fireBall = Fireball(person.livingBeings.donkey.rect.x, person.livingBeings.donkey.rect.y)
 
 
@@ -41,7 +44,7 @@ class drawFireball(pygame.sprite.Sprite):
 
 
         self.rect.x += self.movex
-        allHits = pygame.sprite.spritecollide(self, board.allBorders, False)
+        allHits = self.checkCollisions(board.allBorders, False)
 
         for hit in allHits:
             if self.movex > 0:
@@ -56,7 +59,7 @@ class drawFireball(pygame.sprite.Sprite):
 
         self.moveHorizontally()
 
-        allHits = pygame.sprite.spritecollide(self, board.allbStairs, False)
+        allHits =  self.checkCollisions(board.allbStairs, False)
 
         self.chooseToDrop = random.choice([0,0,0,1])
 
@@ -81,7 +84,7 @@ class drawFireball(pygame.sprite.Sprite):
         # check collisions for up and down
         #print board.allbBlocks
 
-        allHits = pygame.sprite.spritecollide(self, board.allbBlocks, False)
+        allHits = self.checkCollisions(board.allbBlocks, False)
 
         for hit in allHits:
             if self.movey > 0:

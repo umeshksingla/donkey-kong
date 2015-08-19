@@ -35,8 +35,9 @@ class Person(pygame.sprite.Sprite):
         self.points = points
         #self.position = layout.myFont.render(str("P Position : " + str(self.posx)+" , "+str(self.posy)), 1, blue)
 
-    def checkWall(self):
-        pass
+    def checkCollisions(self, withWhom, disappear):
+
+        return pygame.sprite.spritecollide(self, withWhom, disappear)
 
     def handle_keys(self):
         pass
@@ -46,7 +47,7 @@ class Donkey(Person):
 
     def handle_keys(self):
 
-        allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
+        allHits = self.checkCollisions(board.allBlocks, False)
 
         #print allHits, "1"
 
@@ -57,13 +58,13 @@ class Donkey(Person):
 
         if self.rect.x >= 440 - 2*board.border_width:
             self.movex = -1*self.movex
-        allHits = pygame.sprite.spritecollide(self, board.playerSprite, False)
+        #allHits = self.checkCollisions(board.playerSprite, False)
 
         #print allHits, "2"
 
-        if len(allHits):
-            pygame.quit()
-            sys.exit()
+        #if len(allHits):
+        #    pygame.quit()
+        #    sys.exit()
 
 
 class Player(Person):
@@ -79,7 +80,7 @@ class Player(Person):
 
         #check whether player is colliding with stairs
         #self.rect.y+=5
-        allHits = pygame.sprite.spritecollide(self, board.allStairs, False)
+        allHits = self.checkCollisions(board.allStairs, False)
         #self.rect.y-=5
 
         if len(allHits) > 0:
@@ -88,16 +89,49 @@ class Player(Person):
             self.onstair = True
         else:
             self.onstair = False
-
         #print self.onstair
 
+        #gravity acting all the time except when on stair
         self.stickBelow()
 
         #left and right moves
         self.rect.x += self.movex
 
         #check collisions for right and left
-        allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
+        self.checkHor()
+
+        #up and down moves
+        self.rect.y += self.movey
+
+        # check collisions for up and down
+        self.checkVer()
+
+        # check collisions with the coins
+        self.collectCoins()
+
+        # check collisions with the fireballs
+        self.hitFireballs()
+
+        # check colliison with the princess
+        hitPrincess = self.checkCollisions(board.princessSprite, False)
+
+        for hit in hitPrincess:
+            self.points += 50
+            #board.reload()
+
+        #score
+        self.score = board.myFont.render(str("Score : "+str(self.points)), 1, board.font_color)
+
+        #lives
+        self.life = board.myFont.render(str("Lives : "+str(self.lives)), 1, board.font_color)
+
+        if self.lives==0:
+            board.game_over = True
+            #pygame.quit()
+            #sys.exit()
+
+    def checkHor(self):
+        allHits = self.checkCollisions(board.allBlocks, False)
 
         for hit in allHits:
             if self.movex > 0:
@@ -105,12 +139,8 @@ class Player(Person):
             elif self.movex < 0:
                 self.rect.left = hit.rect.right
 
-
-        #up and down moves
-        self.rect.y += self.movey
-
-        # check collisions for up and down
-        allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
+    def checkVer(self):
+        allHits = self.checkCollisions( board.allBlocks, False)
 
         for hit in allHits:
             if self.movey > 0:
@@ -119,48 +149,10 @@ class Player(Person):
                 self.rect.top = hit.rect.bottom
             self.movey = 0
 
-        #position
-        self.position = board.myFont.render(str("P Position : " + str(self.rect.x)+" , "+str(self.rect.y)+" , "+str(self.movex)+" , " + str(self.movey)), 1, board.blue)
-
-        # check collisions with the coins
-        coinHits = pygame.sprite.spritecollide( self, board.allCoins, True)
-
-        for hit in coinHits:
-            self.points += 10
-
-        # check collisions with the fireballs
-        fireHits = pygame.sprite.spritecollide( self, board.allFireballs, True)
-
-        if len(fireHits):
-            self.lives -= 1                     # decrease life by 1
-            self.points -= 20
-            if self.points < 0:                # decrease points by 20
-                self.points = 0
-            self.rect.x = board.border_width+1  # player goes to initial position
-            self.rect.y = board.screen_height - 8*board.border_width
-            #self.movex=0
-            #self.movey=0
-
-        # check colliison with the princess
-        hitPrincess = pygame.sprite.collide_rect(self, livingBeings.princess)
-
-        if hitPrincess:
-            self.points += 50
-
-        #score
-        self.score = board.myFont.render(str("Score : "+str(self.points)), 1, board.font_color)
-
-        #lives
-        self.life = board.myFont.render(str("Lives : "+str(self.lives)), 1, board.font_color)
-
-        if not self.lives:
-            pygame.quit()
-            sys.exit()
-
     def jump(self):
         if not self.onstair:    # disable jump on stair
             self.rect.y += 2
-            allHits = pygame.sprite.spritecollide(self,board.allBlocks,False)
+            allHits = self.checkCollisions(board.allBlocks, False)
             self.rect.y -= 2
 
             if len(allHits) > 0 or self.rect.bottom >= board.screen_height - 3*board.border_width:
@@ -182,8 +174,29 @@ class Player(Person):
     def stop(self):
         self.movey = 0
 
+    def collectCoins(self):
+        coinHits = self.checkCollisions(board.allCoins, True)
+
+        for hit in coinHits:
+            self.points += 5
+
+    def hitFireballs(self):
+        fireHits = self.checkCollisions( board.allFireballs, True)
+
+        if len(fireHits):
+            self.lives -= 1                     # decrease life by 1
+            self.points -= 25
+            if self.points < 0:                # decrease points by 20
+                self.points = 0
+            self.rect.x = board.border_width+1  # player goes to initial position
+            self.rect.y = board.screen_height - 8*board.border_width
+            #self.movex=0
+            #self.movey=0
+            #for fireb in board.allFireballs:
+            #    board.allFireballs.remove(fireb)
+
     def getPosition(self):
-        return self.position
+        return board.myFont.render(str("P Position : " + str(self.rect.x)+" , "+str(self.rect.y), 1, board.blue))
 
     def getScore(self):
         return self.score
@@ -228,6 +241,7 @@ class livingBeings(object):
      # princess instance
 
      #print princess
-     board.playerSprite.add(player)
+     board.princessSprite.add(princess)
      board.allSprites.add(donkey)
      board.allSprites.add(princess)
+     board.allSprites.add(player)

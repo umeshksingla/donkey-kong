@@ -13,6 +13,7 @@ class Board(object):
     screen_width = 640
     border_width = 12
     gap = 100
+    game_over = False
 
     #fonts
     myFont = pygame.font.SysFont("Times New Roman", 2*border_width)
@@ -56,7 +57,8 @@ class Board(object):
     allCoins = pygame.sprite.Group()
     allFireballs = pygame.sprite.Group()
     allSprites = pygame.sprite.Group()  #except player
-    playerSprite = pygame.sprite.Group()
+    princessSprite = pygame.sprite.Group()
+
 
 class drawRect(pygame.sprite.Sprite):
 
