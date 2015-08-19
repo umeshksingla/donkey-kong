@@ -133,7 +133,9 @@ class Player(Person):
 
         if len(fireHits):
             self.lives -= 1                     # decrease life by 1
-            self.points -= 20                   # decrease points by 20
+            self.points -= 20
+            if self.points < 0:                # decrease points by 20
+                self.points = 0
             self.rect.x = board.border_width+1  # player goes to initial position
             self.rect.y = board.screen_height - 8*board.border_width
             #self.movex=0

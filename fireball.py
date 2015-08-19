@@ -16,7 +16,7 @@ class drawFireball(pygame.sprite.Sprite):
         self.movex = 1
         self.movey = 0
 
-        self.chooseToDrop = True
+        self.chooseToDrop = 1
 
         self.posx = person.livingBeings.donkey.rect.x
         self.posy = person.livingBeings.donkey.rect.y + person.livingBeings.donkey.rect.height - 3*board.border_width
@@ -54,24 +54,23 @@ class drawFireball(pygame.sprite.Sprite):
 
     def handle_keys(self):
 
-
-
         self.moveHorizontally()
 
         allHits = pygame.sprite.spritecollide(self, board.allbStairs, False)
 
-        for hit in allHits:
-            self.chooseToDrop = random.choice([0,1])
+        self.chooseToDrop = random.choice([0,0,0,1])
 
-            if self.chooseToDrop==0 and self.movex>=0:
-                print self.chooseToDrop, "yes"
-                self.rect.left = hit.rect.right
-            elif self.chooseToDrop==0 and self.movex<=0:
-                print self.chooseToDrop, "no"
-                self.rect.right = hit.rect.left
-            else:
-                print self.chooseToDrop, "else"
-                pass
+        # if len(allHits):
+        #
+        #     if self.chooseToDrop==0 and self.movex>=0:
+        #         #print self.chooseToDrop, "yes"
+        #         #self.rect.left = hit.rect.right
+        #     elif self.chooseToDrop==0 and self.movex<=0:
+        #         #print self.chooseToDrop, "no"
+        #         #self.rect.right = hit.rect.left
+        #     else:
+        #         print self.chooseToDrop, "else"
+        #         pass
 
         self.stickBelow()
 
@@ -101,9 +100,9 @@ class drawFireball(pygame.sprite.Sprite):
         #     sys.exit()
 
     def stickBelow(self):
-
-        if self.movey == 0:         # when player falls off a platform freely
-            self.movey = 1
-        else:
-            self.movey += board.acc_val_fireball
-        #print self.movex, self.movey
+        if self.chooseToDrop:
+            if self.movey == 0:         # when player falls off a platform freely
+                self.movey = 1
+            else:
+                self.movey += board.acc_val_fireball
+            #print self.movex, self.movey

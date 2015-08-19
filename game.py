@@ -14,6 +14,8 @@ living_beings = person.livingBeings()
 
 coins = coin.drawCoins()
 
+possibilities = range(0,1000)
+#print possibilities
 #board.screen.blit(pygame.image.load(board.background),(0,0))
 #the main controller
 def main():
@@ -23,7 +25,7 @@ def main():
     # Loop that goes forever until exited manually
     while True:
         s=0
-        if living_beings.donkey.rect.x % random.randint(25,50) == 43:
+        if possibilities[random.randint(0,999)]%200==0:
             s = 1
             #print "fire..."
             fireBall = fireball.drawFireball()
