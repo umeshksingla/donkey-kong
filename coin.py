@@ -30,14 +30,26 @@ class drawCoins(object):
         c=0
         i=0
         # generate coins
-        for i in range(20):
+        for j in range(20):
+
+            x1 = board.border_width + 4*board.border_width
+            x2 = board.screen_width-100
+            y1 = board.gap-20+c
+            y2 = board.gap + 20 + c
+
+            if y2 >= board.screen_height - 3*board.border_width - 20:
+                y2 = board.screen_height - 3*board.border_width - 20
+            if y1 >= board.screen_height - 3*board.border_width - 20:
+                y1 = board.screen_height - 3*board.border_width - 20
+
             coin = Coin("Coin",
-                random.uniform( board.border_width + 4*board.border_width, board.screen_width-100),
-                random.uniform(  board.gap-20+c, board.gap + 20 + c),
+                random.uniform( x1, x2),
+                random.uniform( y1, y2),
                 board.coin,
                 20,
                 20
                 )
+
             i=i+1
             if i%3==0:
                 c+=board.gap

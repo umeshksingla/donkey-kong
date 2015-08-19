@@ -55,6 +55,8 @@ class Donkey(Person):
 
         self.rect.x += self.movex
 
+        if self.rect.x >= 440 - 2*board.border_width:
+            self.movex = -1*self.movex
         allHits = pygame.sprite.spritecollide(self, board.playerSprite, False)
 
         #print allHits, "2"
@@ -127,7 +129,7 @@ class Player(Person):
             self.points += 10
 
         # check collisions with the fireballs
-        fireHits = pygame.sprite.spritecollide( self, board.allFireballs, False)
+        fireHits = pygame.sprite.spritecollide( self, board.allFireballs, True)
 
         if len(fireHits):
             self.lives -= 1                     # decrease life by 1
@@ -160,7 +162,7 @@ class Player(Person):
             self.rect.y -= 2
 
             if len(allHits) > 0 or self.rect.bottom >= board.screen_height - 3*board.border_width:
-                self.movey = -7
+                self.movey = -5
 
         #print "allHits", allHits, self.movey
 

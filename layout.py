@@ -94,82 +94,59 @@ class Borders(object):
         border = drawRect(i[0], i[1], board.screen_width, board.border_width, board.dark_brown) #top
         board.allSprites.add(border)
         board.allBlocks.add(border)
+        board.allbBlocks.add(border)
         board.allBorders.add(border)
 
     for i in [(0,0),(board.screen_width - board.border_width,0)]:
         border = drawRect(i[0], i[1], board.border_width, board.screen_height, board.dark_brown) #top
         board.allSprites.add(border)
         board.allBlocks.add(border)
+        board.allbBlocks.add(border)
         board.allBorders.add(border)
 
 class Platforms(object):
 
     #creating blocks
-    block= drawRect(100,board.gap-50,200, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
 
-    block = drawRect(10,1.5*board.gap,350, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    block = drawRect(50+350,1.5*board.gap,40, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-
-    block = drawRect(180,2.5*board.gap,60, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    block = drawRect(180+100,2.5*board.gap,120, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    block = drawRect(180+100+120+40,2.5*board.gap,190, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-
-    block = drawRect(10,3.5*board.gap,440, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    block = drawRect(490,3.5*board.gap,40, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-
-    block = drawRect(150,4.5*board.gap,110, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    block = drawRect(290,4.5*board.gap,350, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-
-
-    block = drawRect(10,5.5*board.gap,170, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-
-    block = drawRect(220,5.5*board.gap,150, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-
-    block = drawRect(10+400,5.5*board.gap,50, board.border_width,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
+    coors = [
+        (100, 50, 200),
+        (10, 150, 350),
+        (400, 150, 40),
+        (180, 250, 60),
+        (280, 250, 120),
+        (440, 250, 190),
+        (10, 350, 440),
+        (490, 350, 40),
+        (150, 450, 105),
+        (290, 450, 350),
+        (10, 550, 170),
+        (220, 550, 150),
+        (410, 550, 50)
+    ]   # x-coor, y-coor, width
+    for i in coors:
+        block = drawRect( i[0], i[1], i[2], board.border_width, board.brown)
+        board.allSprites.add(block)
+        board.allBlocks.add(block)
+        board.allbBlocks.add(block)
 
     #princess blocks
     block = drawRect(100,board.border_width,board.border_width,50,board.brown)
     board.allSprites.add(block)
     board.allBlocks.add(block)
+    board.allbBlocks.add(block)
+
     block = drawRect(340,board.border_width,board.border_width,50,board.brown)
     board.allSprites.add(block)
     board.allBlocks.add(block)
+    board.allbBlocks.add(block)
+
 
 class Stairs(object):
 
-    stair = drawStair(370, 5.5*board.gap-5, board.ladder, 40, board.gap+10)
-    board.allStairs.add(stair)
-    board.allSprites.add(stair)
     c=-1
-    for i in [300,360,240,450,255]:
+    for i in [300,360,240,450,255,370]:
         #print i
-        stair = drawStair(i,(1.5+c)*board.gap-5, board.ladder ,40 ,board.gap+10)
+        stair = drawStair(i,(1.5+c)*board.gap-5, board.ladder ,40,board.gap+10)
         board.allStairs.add(stair)
         board.allbStairs.add(stair)
         c+=1
@@ -180,7 +157,8 @@ class BrokenStairs(object):
     for i in [(400,2.5*board.gap),(400,2.5*board.gap+80),(180,5.5*board.gap),(180,5.5*board.gap+80)]:
         bstair = drawStair(i[0],i[1]-5,board.ladder, 40, 2*board.border_width+5)
         board.allbStairs.add(bstair)
-        if c%2!=0:
-            board.allBlocks.add(bstair)
-        board.allbBlocks.add(bstair)
+        if c%2==0:
+            board.allBlocks.add(bstair)         # top part of broken ladder
+        else:
+            board.allStairs.add(bstair)         # bottom part of broken ladder
         c+=1

@@ -16,6 +16,8 @@ class drawFireball(pygame.sprite.Sprite):
         self.movex = 1
         self.movey = 0
 
+        self.chooseToDrop = True
+
         self.posx = person.livingBeings.donkey.rect.x
         self.posy = person.livingBeings.donkey.rect.y + person.livingBeings.donkey.rect.height - 3*board.border_width
 
@@ -31,7 +33,12 @@ class drawFireball(pygame.sprite.Sprite):
         #     fireBall = Fireball(person.livingBeings.donkey.rect.x, person.livingBeings.donkey.rect.y)
 
 
-    def moveH(self):
+    def moveHorizontally(self):
+
+        if self.rect.x <= board.border_width + 2 and self.rect.y >= board.screen_height - 3*board.border_width - self.height:
+            board.allFireballs.remove(self)     #remove from fireballs list
+            board.allSprites.remove(self)       #remove from all sprites list also
+
 
         self.rect.x += self.movex
         allHits = pygame.sprite.spritecollide(self, board.allBorders, False)
@@ -44,9 +51,28 @@ class drawFireball(pygame.sprite.Sprite):
             self.movex*=-1
 
 
+
     def handle_keys(self):
 
-        self.moveH()
+
+
+        self.moveHorizontally()
+
+        allHits = pygame.sprite.spritecollide(self, board.allbStairs, False)
+
+        for hit in allHits:
+            self.chooseToDrop = random.choice([0,1])
+
+            if self.chooseToDrop==0 and self.movex>=0:
+                print self.chooseToDrop, "yes"
+                self.rect.left = hit.rect.right
+            elif self.chooseToDrop==0 and self.movex<=0:
+                print self.chooseToDrop, "no"
+                self.rect.right = hit.rect.left
+            else:
+                print self.chooseToDrop, "else"
+                pass
+
         self.stickBelow()
 
         #print self.rect.x , self.rect.y
@@ -54,7 +80,9 @@ class drawFireball(pygame.sprite.Sprite):
         self.rect.y += self.movey
 
         # check collisions for up and down
-        allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
+        #print board.allbBlocks
+
+        allHits = pygame.sprite.spritecollide(self, board.allbBlocks, False)
 
         for hit in allHits:
             if self.movey > 0:
@@ -62,6 +90,7 @@ class drawFireball(pygame.sprite.Sprite):
             elif self.movey < 0:
                 self.rect.top = hit.rect.bottom
             self.movey = 0
+
 
         # allHits = pygame.sprite.spritecollide(self, board.playerSprite, False)
         #
@@ -72,6 +101,7 @@ class drawFireball(pygame.sprite.Sprite):
         #     sys.exit()
 
     def stickBelow(self):
+
         if self.movey == 0:         # when player falls off a platform freely
             self.movey = 1
         else:
