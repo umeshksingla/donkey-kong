@@ -50,11 +50,11 @@ class Board(object):
     #sprites
     allBorders = pygame.sprite.Group()
     allStairs = pygame.sprite.Group()
-    allBrokenStairs = pygame.sprite.Group()
+    allbStairs = pygame.sprite.Group()
     allBlocks = pygame.sprite.Group()
+    allbBlocks = pygame.sprite.Group()
     allCoins = pygame.sprite.Group()
     allFireballs = pygame.sprite.Group()
-    allSides = pygame.sprite.Group()
     allSprites = pygame.sprite.Group()  #except player
     playerSprite = pygame.sprite.Group()
 
@@ -71,8 +71,23 @@ class drawRect(pygame.sprite.Sprite):
         self.rect.x = posx
         self.rect.y = posy
 
+class drawStair(pygame.sprite.Sprite):
+
+    def __init__(self, startx, starty, image, image_width, image_height):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.posx = startx
+        self.posy = starty
+
+        self.image = pygame.image.load(image).convert_alpha()
+        self.image = pygame.transform.scale(self.image,(image_width,image_height))
+
+        self.rect = self.image.get_rect()
+        self.rect.x = startx;
+        self.rect.y = starty;
+
 board = Board()
-class Platforms(object):
+class Borders(object):
 
     #creating borders and storing its instance in borders
     for i in [(0,0),(0,board.screen_height-3*board.border_width)]:
@@ -87,49 +102,85 @@ class Platforms(object):
         board.allBlocks.add(border)
         board.allBorders.add(border)
 
+class Platforms(object):
+
     #creating blocks
-    block1= drawRect(100,board.gap-50,240, board.border_width,board.brown)
-    board.allSprites.add(block1)
-    board.allBlocks.add(block1)
-    block2 = drawRect(10,1.5*board.gap,400, board.border_width,board.brown)
-    board.allSprites.add(block2)
-    board.allBlocks.add(block2)
-    block3 = drawRect(180,2.5*board.gap,450, board.border_width,board.brown)
-    board.allSprites.add(block3)
-    board.allBlocks.add(block3)
-    block4 = drawRect(10,3.5*board.gap,480, board.border_width,board.brown)
-    board.allSprites.add(block4)
-    board.allBlocks.add(block4)
-    block5 = drawRect(150,4.5*board.gap,480, board.border_width,board.brown)
-    board.allSprites.add(block5)
-    board.allBlocks.add(block5)
-    block6 = drawRect(10,5.5*board.gap,360, board.border_width,board.brown)
-    board.allSprites.add(block6)
-    board.allBlocks.add(block6)
-    block6 = drawRect(10+400,5.5*board.gap,50, board.border_width,board.brown)
-    board.allSprites.add(block6)
-    board.allBlocks.add(block6)
+    block= drawRect(100,board.gap-50,200, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+    block = drawRect(10,1.5*board.gap,350, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+    block = drawRect(50+350,1.5*board.gap,40, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+    block = drawRect(180,2.5*board.gap,60, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+    block = drawRect(180+100,2.5*board.gap,120, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+    block = drawRect(180+100+120+40,2.5*board.gap,190, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+    block = drawRect(10,3.5*board.gap,440, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+    block = drawRect(490,3.5*board.gap,40, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+    block = drawRect(150,4.5*board.gap,110, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+    block = drawRect(290,4.5*board.gap,350, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+
+    block = drawRect(10,5.5*board.gap,170, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+    block = drawRect(220,5.5*board.gap,150, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+
+    block = drawRect(10+400,5.5*board.gap,50, board.border_width,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
 
     #princess blocks
-    block7 = drawRect(100,board.border_width,board.border_width,50,board.brown)
-    board.allSprites.add(block7)
-    board.allBlocks.add(block7)
-    block8 = drawRect(340,board.border_width,board.border_width,50,board.brown)
-    board.allSprites.add(block8)
-    board.allBlocks.add(block8)
+    block = drawRect(100,board.border_width,board.border_width,50,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
+    block = drawRect(340,board.border_width,board.border_width,50,board.brown)
+    board.allSprites.add(block)
+    board.allBlocks.add(block)
 
+class Stairs(object):
+
+    stair = drawStair(370, 5.5*board.gap-5, board.ladder, 40, board.gap+10)
+    board.allStairs.add(stair)
+    board.allSprites.add(stair)
     c=-1
     for i in [300,360,240,450,255]:
         #print i
-        stair = drawRect(i,(1.5+c)*board.gap, board.border_width,board.gap+10,board.green)
+        stair = drawStair(i,(1.5+c)*board.gap-5, board.ladder ,40 ,board.gap+10)
         board.allStairs.add(stair)
-        board.allSprites.add(stair)
+        board.allbStairs.add(stair)
         c+=1
 
+class BrokenStairs(object):
     #create broken stairs
     c=0
-    for i in [(400,2.6*board.gap),(400,3.2*board.gap)]:
-        bstair = drawRect(i[0],i[1], board.border_width, 2.5*board.border_width, board.green)
-        board.allSprites.add(bstair)
-        board.allBrokenStairs.add(bstair)
+    for i in [(400,2.5*board.gap),(400,2.5*board.gap+80),(180,5.5*board.gap),(180,5.5*board.gap+80)]:
+        bstair = drawStair(i[0],i[1]-5,board.ladder, 40, 2*board.border_width+5)
+        board.allbStairs.add(bstair)
+        if c%2!=0:
+            board.allBlocks.add(bstair)
+        board.allbBlocks.add(bstair)
         c+=1

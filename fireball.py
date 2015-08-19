@@ -34,7 +34,7 @@ class drawFireball(pygame.sprite.Sprite):
     def moveH(self):
 
         self.rect.x += self.movex
-        allHits = pygame.sprite.spritecollide(self, board.allBlocks, False)
+        allHits = pygame.sprite.spritecollide(self, board.allBorders, False)
 
         for hit in allHits:
             if self.movex > 0:

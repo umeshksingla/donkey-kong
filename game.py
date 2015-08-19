@@ -23,7 +23,7 @@ def main():
     # Loop that goes forever until exited manually
     while True:
         s=0
-        if living_beings.donkey.rect.x % random.randint(25,50) == 33:
+        if living_beings.donkey.rect.x % random.randint(1,50) == 25:
             s = 1
             #print "fire..."
             fireBall = fireball.drawFireball()
@@ -69,6 +69,7 @@ def main():
         living_beings.player.draw()
 
         board.allSprites.draw(board.screen)
+        board.allbStairs.draw(board.screen)
         board.allCoins.draw(board.screen)
         board.playerSprite.draw(board.screen)
         clock.tick(60)

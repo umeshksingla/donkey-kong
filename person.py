@@ -42,7 +42,6 @@ class Person(pygame.sprite.Sprite):
         pass
 
 
-
 class Donkey(Person):
 
     def handle_keys(self):
@@ -76,7 +75,6 @@ class Player(Person):
 
     def handle_keys(self):
 
-
         #check whether player is colliding with stairs
         #self.rect.y+=5
         allHits = pygame.sprite.spritecollide(self, board.allStairs, False)
@@ -90,8 +88,6 @@ class Player(Person):
             self.onstair = False
 
         #print self.onstair
-
-
 
         self.stickBelow()
 
@@ -134,12 +130,18 @@ class Player(Person):
         fireHits = pygame.sprite.spritecollide( self, board.allFireballs, False)
 
         if len(fireHits):
-            self.lives -= 1
-            self.points -= 50
-            self.rect.x = board.border_width+1
+            self.lives -= 1                     # decrease life by 1
+            self.points -= 20                   # decrease points by 20
+            self.rect.x = board.border_width+1  # player goes to initial position
             self.rect.y = board.screen_height - 8*board.border_width
             #self.movex=0
             #self.movey=0
+
+        # check colliison with the princess
+        hitPrincess = pygame.sprite.collide_rect(self, livingBeings.princess)
+
+        if hitPrincess:
+            self.points += 50
 
         #score
         self.score = board.myFont.render(str("Score : "+str(self.points)), 1, board.font_color)
@@ -152,7 +154,7 @@ class Player(Person):
             sys.exit()
 
     def jump(self):
-        if not self.onstair:
+        if not self.onstair:    # disable jump on stair
             self.rect.y += 2
             allHits = pygame.sprite.spritecollide(self,board.allBlocks,False)
             self.rect.y -= 2
@@ -163,11 +165,12 @@ class Player(Person):
         #print "allHits", allHits, self.movey
 
     def stickBelow(self):
-        if not self.onstair:
+        if not self.onstair:            # disable gravity on stair
             if self.movey == 0:         # when player falls off a platform freely
                 self.movey = 1
             else:
-                self.movey += board.acc_val
+                self.movey += board.acc_val     # increase speed as it goes down
+
         # if self.rect.y >= board.screen_height - 3*board.border_width - self.rect.height and self.movey >= 0:
         #     self.movey = 0
         #     self.rect.y = board.screen_height - 3*board.border_width - self.rect.height
@@ -193,7 +196,7 @@ class livingBeings(object):
         board.screen_height-8*board.border_width,
         board.mario,
         3*board.border_width-10,
-        3*board.border_width,
+        3*board.border_width-10,
         0
         ) # player instance
 
@@ -218,10 +221,8 @@ class livingBeings(object):
         4*board.border_width,
         0
         )
-     stair = Donkey("stair", 370, 5.5*board.gap-5, board.ladder, 40, board.gap+10, 0)
-     board.allStairs.add(stair)
-     board.allSprites.add(stair)
      # princess instance
+
      #print princess
      board.playerSprite.add(player)
      board.allSprites.add(donkey)
