@@ -30,8 +30,9 @@ class Board(object):
     font_color = (153,87,35)
 
     #speed and accelerate constants
-    up , down, left, right = (0,-2),(0,2),(-2,0),(2,0)
-    upi , downi, lefti, righti = (0,0),(0,0),(2,0),(-2,0)
+    change = 3
+    up , down, left, right = (0,-1*change),(0, change),(-1*change,0),(change,0)
+    upi , downi, lefti, righti = (0,0),(0,0),(change,0),(-1*change,0)
     acc_val = 0.25
     acc_val_fireball = 0.15
 
@@ -48,6 +49,10 @@ class Board(object):
     ladder = "ladder.png"
     background = "back.png"
 
+    #start and game over screen text display coordinates for reference
+    startFontx = (screen_width - 2*border_width)/2-100
+    startFonty = (screen_height - 2*border_width)/2 - 100
+
     #sprites
     allBorders = pygame.sprite.Group()
     allStairs = pygame.sprite.Group()
@@ -60,7 +65,7 @@ class Board(object):
     princessSprite = pygame.sprite.Group()
 
 
-class drawRect(pygame.sprite.Sprite):
+class Rect(pygame.sprite.Sprite):
 
     def __init__(self,posx,posy,width,height,color):
 
@@ -73,7 +78,7 @@ class drawRect(pygame.sprite.Sprite):
         self.rect.x = posx
         self.rect.y = posy
 
-class drawStair(pygame.sprite.Sprite):
+class Stair(pygame.sprite.Sprite):
 
     def __init__(self, startx, starty, image, image_width, image_height):
         pygame.sprite.Sprite.__init__(self)
@@ -90,77 +95,80 @@ class drawStair(pygame.sprite.Sprite):
 
 board = Board()
 class Borders(object):
+    def __init__(self):
+        #creating borders and storing its instance in borders
+        for i in [(0,0),(0,board.screen_height-3*board.border_width)]:
+            border = Rect(i[0], i[1], board.screen_width, board.border_width, board.dark_brown) #top
+            board.allSprites.add(border)
+            board.allBlocks.add(border)
+            board.allbBlocks.add(border)
+            board.allBorders.add(border)
 
-    #creating borders and storing its instance in borders
-    for i in [(0,0),(0,board.screen_height-3*board.border_width)]:
-        border = drawRect(i[0], i[1], board.screen_width, board.border_width, board.dark_brown) #top
-        board.allSprites.add(border)
-        board.allBlocks.add(border)
-        board.allbBlocks.add(border)
-        board.allBorders.add(border)
-
-    for i in [(0,0),(board.screen_width - board.border_width,0)]:
-        border = drawRect(i[0], i[1], board.border_width, board.screen_height, board.dark_brown) #top
-        board.allSprites.add(border)
-        board.allBlocks.add(border)
-        board.allbBlocks.add(border)
-        board.allBorders.add(border)
+        for i in [(0,0),(board.screen_width - board.border_width,0)]:
+            border = Rect(i[0], i[1], board.border_width, board.screen_height, board.dark_brown) #top
+            board.allSprites.add(border)
+            board.allBlocks.add(border)
+            board.allbBlocks.add(border)
+            board.allBorders.add(border)
 
 class Platforms(object):
 
     #creating blocks
+    def __init__(self):
 
-    coors = [
-        (100, 50, 200),
-        (10, 150, 350),
-        (400, 150, 40),
-        (180, 250, 60),
-        (280, 250, 120),
-        (440, 250, 190),
-        (10, 350, 440),
-        (490, 350, 40),
-        (150, 450, 105),
-        (290, 450, 350),
-        (10, 550, 170),
-        (220, 550, 150),
-        (410, 550, 50)
-    ]   # x-coor, y-coor, width
-    for i in coors:
-        block = drawRect( i[0], i[1], i[2], board.border_width, board.brown)
+        coors = [
+            (100, 50, 200),
+            (10, 150, 350),
+            (400, 150, 40),
+            (180, 250, 60),
+            (280, 250, 120),
+            (440, 250, 190),
+            (10, 350, 440),
+            (490, 350, 40),
+            (150, 450, 105),
+            (290, 450, 345),
+            (10, 550, 170),
+            (220, 550, 150),
+            (410, 550, 50)
+        ]   # x-coor, y-coor, width
+        for i in coors:
+            block = Rect( i[0], i[1], i[2], board.border_width, board.brown)
+            board.allSprites.add(block)
+            board.allBlocks.add(block)
+            board.allbBlocks.add(block)
+
+        #princess side-blocks
+        block = Rect(100,board.border_width,board.border_width,50,board.brown)
         board.allSprites.add(block)
         board.allBlocks.add(block)
         board.allbBlocks.add(block)
 
-    #princess blocks
-    block = drawRect(100,board.border_width,board.border_width,50,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    board.allbBlocks.add(block)
-
-    block = drawRect(340,board.border_width,board.border_width,50,board.brown)
-    board.allSprites.add(block)
-    board.allBlocks.add(block)
-    board.allbBlocks.add(block)
+        block = Rect(340,board.border_width,board.border_width,50,board.brown)
+        board.allSprites.add(block)
+        board.allBlocks.add(block)
+        board.allbBlocks.add(block)
 
 
 class Stairs(object):
 
-    c=-1
-    for i in [300,360,240,450,255,370]:
-        #print i
-        stair = drawStair(i,(1.5+c)*board.gap-5, board.ladder ,40,board.gap+10)
-        board.allStairs.add(stair)
-        board.allbStairs.add(stair)
-        c+=1
+    def __init__(self):
+        c=-1
+        for i in [300,360,240,450,255,370]:
+            #print i
+            stair = Stair(i,(1.5+c)*board.gap-5, board.ladder ,40,board.gap+10)
+            board.allStairs.add(stair)
+            board.allbStairs.add(stair)
+            c+=1
 
 class BrokenStairs(object):
     #create broken stairs
-    c=0
-    for i in [(400,2.5*board.gap),(400,2.5*board.gap+80),(180,5.5*board.gap),(180,5.5*board.gap+80)]:
-        bstair = drawStair(i[0],i[1]-5,board.ladder, 40, 2*board.border_width+5)
-        board.allbStairs.add(bstair)
-        if c%2==0:
-            board.allBlocks.add(bstair)         # top part of broken ladder
-        else:
-            board.allStairs.add(bstair)         # bottom part of broken ladder
-        c+=1
+    def __init__(self):
+        c=0
+        for i in [(400,2.5*board.gap),(400,2.5*board.gap+80),(180,5.5*board.gap),(180,5.5*board.gap+80)]:
+            bstair = Stair(i[0],i[1]-5,board.ladder, 40, 2*board.border_width+5)
+            board.allbStairs.add(bstair)
+            if c%2==0:
+                board.allBlocks.add(bstair)         # top part of broken ladder
+            else:
+                board.allStairs.add(bstair)         # bottom part of broken ladder
+            c+=1

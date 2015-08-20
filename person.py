@@ -69,7 +69,7 @@ class Donkey(Person):
 
 class Player(Person):
 
-    lives = 3
+    lives = 1
 
     def changespeed(self, coor):
         #print coor
@@ -84,7 +84,7 @@ class Player(Person):
         #self.rect.y-=5
 
         if len(allHits) > 0:
-            if self.movey > 2:
+            if self.movey > board.change:
                 self.movey=0
             self.onstair = True
         else:
@@ -113,7 +113,7 @@ class Player(Person):
         self.hitFireballs()
 
         # check colliison with the princess
-        hitPrincess = self.checkCollisions(board.princessSprite, False)
+        hitPrincess = self.checkCollisions(board.princessSprite, True)
 
         for hit in hitPrincess:
             self.points += 50
@@ -125,8 +125,9 @@ class Player(Person):
         #lives
         self.life = board.myFont.render(str("Lives : "+str(self.lives)), 1, board.font_color)
 
-        if self.lives==0:
-            board.game_over = True
+        # if self.lives==0:
+        #     pass
+            #board.game_over = True
             #pygame.quit()
             #sys.exit()
 
@@ -208,40 +209,41 @@ class Player(Person):
 
 class livingBeings(object):
      #living beings
-     player = Player("UMESH",
-        board.border_width+1,
-        board.screen_height-8*board.border_width,
-        board.mario,
-        3*board.border_width-10,
-        3*board.border_width-10,
-        0
-        ) # player instance
+     def __init__(self):
+         self.player = Player("UMESH",
+            board.border_width+1,
+            board.screen_height-8*board.border_width,
+            board.mario,
+            3*board.border_width-10,
+            3*board.border_width-10,
+            0
+            ) # player instance
 
-     donkey = Donkey(
-        "DONKEY",
-        board.border_width+1,
-        board.gap,
-        board.donkey,
-        4*board.border_width,
-        4*board.border_width,
-        0
-        )
-     donkey.movex = 3
-     # donkey instance
-     #print princess
-     princess = Player(
-        "PRINCESS",
-        120,
-        board.border_width,
-        board.princess,
-        2*board.border_width,
-        4*board.border_width,
-        0
-        )
-     # princess instance
+         self.donkey = Donkey(
+            "DONKEY",
+            board.border_width+1,
+            board.gap,
+            board.donkey,
+            4*board.border_width,
+            4*board.border_width,
+            0
+            )
+         self.donkey.movex = 3
+         # donkey instance
+         #print princess
+         self.princess = Player(
+            "PRINCESS",
+            120,
+            board.border_width,
+            board.princess,
+            2*board.border_width,
+            4*board.border_width,
+            0
+            )
+         # princess instance
 
-     #print princess
-     board.princessSprite.add(princess)
-     board.allSprites.add(donkey)
-     board.allSprites.add(princess)
-     board.allSprites.add(player)
+         #print princess
+         board.princessSprite.add(self.princess)
+         board.allSprites.add(self.donkey)
+         board.allSprites.add(self.princess)
+         board.allSprites.add(self.player)

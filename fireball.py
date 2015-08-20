@@ -6,10 +6,9 @@ from pygame.locals import *
 
 board = layout.Board()
 
-
 class drawFireball(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, donkey_x, donkey_y, donkey_height):
 
         pygame.sprite.Sprite.__init__(self)
 
@@ -18,8 +17,9 @@ class drawFireball(pygame.sprite.Sprite):
 
         self.chooseToDrop = 1
 
-        self.posx = person.livingBeings.donkey.rect.x
-        self.posy = person.livingBeings.donkey.rect.y + person.livingBeings.donkey.rect.height - 3*board.border_width
+        #hi = person.livingBeings()
+        self.posx = donkey_x
+        self.posy = donkey_y + donkey_height - 3*board.border_width
 
         self.image = pygame.image.load(board.fireball).convert_alpha()
         self.image = pygame.transform.scale(self.image,( 3*board.border_width - 20, 3*board.border_width - 20))
@@ -61,7 +61,7 @@ class drawFireball(pygame.sprite.Sprite):
 
         allHits =  self.checkCollisions(board.allbStairs, False)
 
-        self.chooseToDrop = random.choice([0,0,0,1])
+        self.chooseToDrop = random.choice([0,0,0,1,1])
 
         # if len(allHits):
         #
