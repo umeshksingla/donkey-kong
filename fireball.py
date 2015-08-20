@@ -10,11 +10,11 @@ board = layout.Board()
 
 class drawFireball(pygame.sprite.Sprite):
 
-    def __init__(self, speed, donkey_x, donkey_y, donkey_height):
+    def __init__(self, donkey_x, donkey_y, donkey_height):
 
         pygame.sprite.Sprite.__init__(self)
 
-        self.movex = 1.2
+        self.movex = 1
         self.movey = 0
 
         self.chooseToDrop = 1

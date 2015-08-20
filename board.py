@@ -66,16 +66,14 @@ class Game(object):
             s = 1
             #print "fire..."
             fireBall = fireball.drawFireball(
-                level.speed,
                 self.living_beings.donkey.getPosition()[0],
                 self.living_beings.donkey.getPosition()[1],
                 self.living_beings.donkey.rect.height)
             self.board.allFireballs.add(fireBall)
             self.board.allSprites.add(fireBall)
 
-            if level.speed > 1:
+            if level.level > 1:
                 fireBall = fireball.drawFireball(
-                    level.speed,
                     self.living_beings.donkey1.getPosition()[0],
                     self.living_beings.donkey1.getPosition()[1],
                     self.living_beings.donkey1.rect.height)

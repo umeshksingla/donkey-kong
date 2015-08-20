@@ -1,3 +1,3 @@
 def init():
-    global speed
-    speed = 1
+    global level
+    level = 1

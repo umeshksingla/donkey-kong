@@ -117,12 +117,12 @@ def main():
                 fireb.handle_keys()
 
             if not living_beings.player.lives:
-                level.speed = 1
+                level.level = 1
                 board.game_over = True
                 #living_beings.player.points = 0
 
             if pygame.sprite.collide_rect(living_beings.player, living_beings.princess):
-                level.speed += 1
+                level.level += 1
                 board.game_over = True
 
             living_beings.player.draw()
@@ -131,7 +131,7 @@ def main():
             board.allbStairs.draw(board.screen)
             board.allCoins.draw(board.screen)
             #board.playerSprite.draw(board.screen)
-            levelno = board.myFont.render(str("Level : "+str(level.speed)), 1, board.font_color)
+            levelno = board.myFont.render(str("Level : "+str(level.level)), 1, board.font_color)
             board.screen.blit(levelno,(board.screen_width -9*board.border_width , board.screen_height - 2*board.border_width))
             clock.tick(60)
 

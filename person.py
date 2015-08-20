@@ -13,6 +13,7 @@ board = layout.Board()
 
 player = None
 donkey = None
+donkey1 = None
 princess = None
 
 class Person(pygame.sprite.Sprite):
@@ -121,11 +122,6 @@ class Player(Person):
         #lives
         self.life = board.myFont.render(str("Life : "+str(self.lives)), 1, board.font_color)
 
-        # if self.lives==0:
-        #     pass
-            #board.game_over = True
-            #pygame.quit()
-            #sys.exit()
 
     def __checkHor(self):
         allHits = self.checkCollisions(board.allBlocks, False)
@@ -163,10 +159,6 @@ class Player(Person):
                 self.movey = 1
             else:
                 self.movey += board.acc_val     # increase speed as it goes down
-
-        # if self.rect.y >= board.screen_height - 3*board.border_width - self.rect.height and self.movey >= 0:
-        #     self.movey = 0
-        #     self.rect.y = board.screen_height - 3*board.border_width - self.rect.height
 
     def stop(self):
         self.movey = 0
@@ -227,7 +219,7 @@ class livingBeings(object):
 
          self.donkey1 = None
 
-         if level.speed > 1:
+         if level.level > 1:
              self.donkey1 = Donkey(
                 "DONKEY",
                 200,
