@@ -16,3 +16,5 @@ W - MOVE UP ON STAIRS
 S - MOVE DOWN ON STAIRS
 SPACE - JUMP
 Q - QUIT
+
+4. Run 'python game.py' from the shell OR you have to run game.py file only.
