@@ -5,6 +5,7 @@ import pygame, sys, random
 from pygame.locals import *
 
 #modules
+import level
 import coin, fireball, person
 from layout import *
 
@@ -32,7 +33,7 @@ class Game(object):
             self.board.screen.blit(startText,( self.board.startFontx, self.board.startFonty+3*c*self.board.border_width))
             c+=1
 
-        startText = self.board.myFont.render(str("PRESS 'S' TO START"), 1, self.board.dark_brown)
+        startText = self.board.myFont.render(str("PRESS 'E' TO START"), 1, self.board.dark_brown)
         self.board.screen.blit( startText,( self.board.startFontx, self.board.startFonty + 400))
 
     def drawGameOverScreen(self, playerScore):
@@ -57,3 +58,26 @@ class Game(object):
         self.board.allCoins.empty()
         self.board.allFireballs.empty()
         self.board.princessSprite.empty()
+
+    def makeFire(self):
+        s=0
+        possibilities = range(0,1000)
+        if possibilities[random.randint(0,999)]%150==0:
+            s = 1
+            #print "fire..."
+            fireBall = fireball.drawFireball(
+                level.speed,
+                self.living_beings.donkey.getPosition()[0],
+                self.living_beings.donkey.getPosition()[1],
+                self.living_beings.donkey.rect.height)
+            self.board.allFireballs.add(fireBall)
+            self.board.allSprites.add(fireBall)
+
+            if level.speed > 1:
+                fireBall = fireball.drawFireball(
+                    level.speed,
+                    self.living_beings.donkey1.getPosition()[0],
+                    self.living_beings.donkey1.getPosition()[1],
+                    self.living_beings.donkey1.rect.height)
+                self.board.allFireballs.add(fireBall)
+                self.board.allSprites.add(fireBall)

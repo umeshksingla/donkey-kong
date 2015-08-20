@@ -2,6 +2,7 @@
 ######## Umesh Singla ########
 
 import pygame
+import level
 from pygame.locals import *
 
 pygame.init()       #initialise pygame to initialise pygame.font and others
@@ -13,6 +14,7 @@ class Board(object):
     screen_width = 640
     border_width = 12
     gap = 100
+
     game_over = False
 
     #fonts
@@ -30,7 +32,7 @@ class Board(object):
     font_color = (153,87,35)
 
     #speed and accelerate constants
-    change = 3
+    change = 2.5
     up , down, left, right = (0,-1*change),(0, change),(-1*change,0),(change,0)
     upi , downi, lefti, righti = (0,0),(0,0),(change,0),(-1*change,0)
     acc_val = 0.25
@@ -63,7 +65,6 @@ class Board(object):
     allFireballs = pygame.sprite.Group()
     allSprites = pygame.sprite.Group()  #except player
     princessSprite = pygame.sprite.Group()
-
 
 class Rect(pygame.sprite.Sprite):
 
@@ -126,7 +127,7 @@ class Platforms(object):
             (10, 350, 440),
             (490, 350, 40),
             (150, 450, 105),
-            (290, 450, 345),
+            (295, 450, 345),
             (10, 550, 170),
             (220, 550, 150),
             (410, 550, 50)

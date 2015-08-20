@@ -1,7 +1,9 @@
 ######## Aug 16, 2015 ########
 ######## Umesh Singla ########
 
-import pygame, layout, random
+import pygame
+import level
+import layout, random
 from pygame.locals import *
 
 board = layout.Board()

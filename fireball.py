@@ -1,18 +1,20 @@
 ######## Aug 16, 2015 ########
 ######## Umesh Singla ########
 
-import pygame, layout, person, time, random, sys
+import pygame
+import level
+import layout, person, time, random, sys
 from pygame.locals import *
 
 board = layout.Board()
 
 class drawFireball(pygame.sprite.Sprite):
 
-    def __init__(self, donkey_x, donkey_y, donkey_height):
+    def __init__(self, speed, donkey_x, donkey_y, donkey_height):
 
         pygame.sprite.Sprite.__init__(self)
 
-        self.movex = 1
+        self.movex = 1.2
         self.movey = 0
 
         self.chooseToDrop = 1
@@ -36,7 +38,7 @@ class drawFireball(pygame.sprite.Sprite):
         #     fireBall = Fireball(person.livingBeings.donkey.rect.x, person.livingBeings.donkey.rect.y)
 
 
-    def moveHorizontally(self):
+    def __moveHorizontally(self):
 
         if self.rect.x <= board.border_width + 2 and self.rect.y >= board.screen_height - 3*board.border_width - self.height:
             board.allFireballs.remove(self)     #remove from fireballs list
@@ -57,25 +59,13 @@ class drawFireball(pygame.sprite.Sprite):
 
     def handle_keys(self):
 
-        self.moveHorizontally()
+        self.__moveHorizontally()
 
         allHits =  self.checkCollisions(board.allbStairs, False)
 
-        self.chooseToDrop = random.choice([0,0,0,1,1])
+        self.chooseToDrop = random.choice([0,0,0,1,1,1,1])
 
-        # if len(allHits):
-        #
-        #     if self.chooseToDrop==0 and self.movex>=0:
-        #         #print self.chooseToDrop, "yes"
-        #         #self.rect.left = hit.rect.right
-        #     elif self.chooseToDrop==0 and self.movex<=0:
-        #         #print self.chooseToDrop, "no"
-        #         #self.rect.right = hit.rect.left
-        #     else:
-        #         print self.chooseToDrop, "else"
-        #         pass
-
-        self.stickBelow()
+        self.__stickBelow()
 
         #print self.rect.x , self.rect.y
 
@@ -94,15 +84,7 @@ class drawFireball(pygame.sprite.Sprite):
             self.movey = 0
 
 
-        # allHits = pygame.sprite.spritecollide(self, board.playerSprite, False)
-        #
-        # #print allHits, "2"
-        #
-        # if len(allHits):
-        #     pygame.quit()
-        #     sys.exit()
-
-    def stickBelow(self):
+    def __stickBelow(self):
         if self.chooseToDrop:
             if self.movey == 0:         # when player falls off a platform freely
                 self.movey = 1
