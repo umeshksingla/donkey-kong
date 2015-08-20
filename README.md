@@ -1,5 +1,5 @@
-Our favourite game is here.. Donkey Kong
- 
+Our favorite game is here.. Donkey Kong
+
 The goal is simple. You have to rescue the princess and the level gets higher.
 Obviously, the game doesn't have infinite levels due to the time constraint.
 
@@ -15,4 +15,4 @@ D - MOVE RIGHT
 W - MOVE UP ON STAIRS
 S - MOVE DOWN ON STAIRS
 SPACE - JUMP
-Q - QUIT	
+Q - QUIT
